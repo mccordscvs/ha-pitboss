@@ -109,17 +109,6 @@ class TargetProbeTemperature(BaseEntity, NumberEntity):
         return super().available and bool(data)
 
     @property
-    def native_value(self) -> int | None:
-        """Return the native value of the probe target."""
-        if data := self.coordinator.data:
-            return data.get(self.entity_description.key)
-        return None
-
-    async def async_set_native_value(self, value: float) -> None:
-        """Set new value."""
-        await self.entity_description.set_fn(self.coordinator.api)(int(value))
-
-    @property
     def native_min_value(self) -> float:
         """Return the minimum value."""
         min_temp = DEFAULT_PROBE_MIN_TEMP
