@@ -30,6 +30,7 @@ class PitBossNumberEntityDescription(NumberEntityDescription):
     device_class: NumberDeviceClass = NumberDeviceClass.TEMPERATURE
     icon: str = "mdi:thermometer"
     matching_probe_key: Literal["p1Temp", "p2Temp"]
+    matching_probe_no: int
 
 
 PROBE_1_DESCRIPTION = PitBossNumberEntityDescription(
@@ -37,12 +38,14 @@ PROBE_1_DESCRIPTION = PitBossNumberEntityDescription(
     name="Probe 1 Target",
     set_fn=lambda api: api.set_probe_temperature,
     matching_probe_key="p1Temp",
+    matching_probe_no=1,
 )
 PROBE_2_DESCRIPTION = PitBossNumberEntityDescription(
     key="p2Target",
     name="Probe 2 Target",
     set_fn=lambda api: api.set_probe_2_temperature,
     matching_probe_key="p2Temp",
+    matching_probe_no=2,
 )
 
 
@@ -104,6 +107,17 @@ class TargetProbeTemperature(BaseEntity, NumberEntity):
                 and super().available
             )
         return super().available and bool(data)
+
+    @property
+    def native_value(self) -> int | None:
+        """Return the native value of the probe target."""
+        if data := self.coordinator.data:
+            return data.get(self.entity_description.key)
+        return None
+
+    async def async_set_native_value(self, value: float) -> None:
+        """Set new value."""
+        await self.entity_description.set_fn(self.coordinator.api)(int(value))
 
     @property
     def native_min_value(self) -> float:
