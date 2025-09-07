@@ -11,6 +11,8 @@ __pycache__
 .vscode/*
 !.vscode/tasks.json
 coverage.xml
+.gitignore
+.devcontainer
 
 # Home Assistant configuration
 .cloud
