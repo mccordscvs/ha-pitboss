@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 {
     "version": "2.0.0",
     "tasks": [
@@ -12,3 +13,17 @@
         }
     ]
 }
+=======
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Home Assistant on port 8123",
+            "type": "shell",
+            "command": "scripts/develop",
+            "isBackground": true,
+            "problemMatcher": []
+        }
+    ]
+}
+>>>>>>> Stashed changes
